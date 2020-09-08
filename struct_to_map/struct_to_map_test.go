@@ -1,11 +1,13 @@
 package struct_to_map
 
 import (
+	"fmt"
 	"testing"
 )
 
 // UserRequestBody
 type UserRequestBody struct {
+	ID        int         `json:"id"`
 	Username  string      `json:"username"`
 	Password  string      `json:"password"`
 	Profile   Profile     `json:"habit"`
@@ -29,8 +31,11 @@ type Addresses struct {
 	PostalCode   string   `json:"postalCode"`
 }
 
+// 测试userRequestBody
 var userRequestBody = UserRequestBody{
+	ID:       123456,
 	Username: "lzhpo",
+	Password: "123456",
 	Profile: Profile{
 		Age:   21,
 		Sex:   "男",
@@ -61,9 +66,21 @@ var userRequestBody = UserRequestBody{
 }
 
 func TestUnmarshalToMap(t *testing.T) {
-	UnmarshalToMap(userRequestBody)
+	toMapValue, unmarshalToMapError := UnmarshalToMap(userRequestBody)
+	if unmarshalToMapError != nil {
+		fmt.Println("UnmarshalToMap:", unmarshalToMapError)
+	}
+	for k, v := range toMapValue {
+		fmt.Printf("key:%v value:%v value type:%T\n", k, v, v)
+	}
 }
 
 func TestReflectToMap(t *testing.T) {
-	ReflectToMap(userRequestBody, "json")
+	reflectToMap, reflectToMapError := ReflectToMap(userRequestBody, "json")
+	if reflectToMapError != nil {
+		fmt.Println("ReflectToMap Error:", reflectToMapError)
+	}
+	for k, v := range reflectToMap {
+		fmt.Printf("key:%v value:%v value type:%T\n", k, v, v)
+	}
 }

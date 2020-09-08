@@ -3,7 +3,6 @@ package struct_to_map
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 )
 
@@ -13,17 +12,16 @@ func UnmarshalToMap(inBody interface{}) (map[string]interface{}, error) {
 
 	inBodyBytes, inBodyMarshalError := json.Marshal(&inBody)
 	if inBodyMarshalError != nil {
-		log.Println(fmt.Sprintf("json Marshal %v Error:%v", inBody, inBodyMarshalError))
+		fmt.Println(fmt.Sprintf("json Marshal %v Error:%v", inBody, inBodyMarshalError))
 	}
 
 	var inBodyMap map[string]interface{}
 	inBodyUnmarshalError := json.Unmarshal(inBodyBytes, &inBodyMap)
 	if inBodyUnmarshalError != nil {
-		log.Println(fmt.Sprintf("json Unmarshal %v Error:%v", inBody, inBodyUnmarshalError))
+		fmt.Println(fmt.Sprintf("json Unmarshal %v Error:%v", inBody, inBodyUnmarshalError))
 	}
 
 	for k, v := range inBodyMap {
-		fmt.Printf("key:%v value:%v value type:%T\n", k, v, v)
 		out[k] = v
 	}
 
@@ -51,10 +49,8 @@ func ReflectToMap(in interface{}, tagName string) (map[string]interface{}, error
 	inValueType := inValue.Type()
 	for i := 0; i < inValue.NumField(); i++ {
 		field := inValueType.Field(i)
-		log.Println("Type:", inValue.Field(i).Type())
 		if tagValue := field.Tag.Get(tagName); tagName != "" {
 			out[tagValue] = inValue.Field(i).Interface()
-			fmt.Printf("key:%v value:%v value type:%T\n", out[tagValue], inValue.Field(i).Interface(), inValue.Field(i).Interface())
 		}
 	}
 

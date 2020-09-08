@@ -52,7 +52,7 @@ func NewResponse1(opts ...ResponseFunc) *Response {
 func NewResponse2(code int, msg string, data interface{}) *Response {
 	return &Response{
 		Code: code,
-		Msg: msg,
+		Msg:  msg,
 		Data: data,
 	}
 }
